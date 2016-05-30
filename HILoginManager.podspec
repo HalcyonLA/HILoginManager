@@ -10,8 +10,8 @@ s.version = "1.0.0"
 s.author = { "Vlad Getman" => "ibrightsider@gmail.com" }
 
 s.license = { :type => "MIT", :file => "LICENSE" }
-s.homepage = "https://github.com/HalcyonLA/HalcyonLoginManager"
-s.source = { :git => "https://github.com/HalcyonLA/HalcyonLoginManager.git", :tag => "#{s.version}"}
+s.homepage = "https://github.com/HalcyonLA/HILoginManager"
+s.source = { :git => "https://github.com/HalcyonLA/HILoginManager.git", :tag => "#{s.version}"}
 
 s.framework = "UIKit"
 
