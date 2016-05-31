@@ -51,12 +51,12 @@ public func StringFromAuthType(authType: AuthType) -> String {
 
 public class AuthCredentials: NSObject {
     
-    public var authType: AuthType
-    public var authData: [String : AnyObject]
+    public var type: AuthType
+    public var data: [String : AnyObject]
     
     required public init(authType: AuthType, authData: [String : AnyObject]) {
-        self.authType = authType
-        self.authData = authData
+        self.type = authType
+        self.data = authData
         super.init()
     }
 }
