@@ -45,8 +45,9 @@ public func StringFromAuthType(authType: AuthType) -> String {
     func reset()
 }
 
-@objc public protocol LoginManagerDelegate: NSObjectProtocol {
-    func userLoggedOut()
+@objc public protocol HILoginManagerDelegate: NSObjectProtocol {
+    optional func userIdDidChanged()
+    func userDidLoggedOut()
 }
 
 public class AuthCredentials: NSObject {
@@ -69,13 +70,14 @@ public class LoginResponse: NSObject {
 
 public class LoginManager: NSObject {
     
-    public static var delegate: LoginManagerDelegate? = nil
+    public static var delegate: HILoginManagerDelegate? = nil
     
     public static var extensions = [LoginProtocol]()
     
     public static var userId: NSNumber? {
         set {
-            Defaults["userId"] = userId
+            Defaults["userId"] = newValue
+            self.delegate?.userIdDidChanged?()
         }
         get {
             return Defaults.numberForKey("userId")
@@ -112,6 +114,6 @@ public class LoginManager: NSObject {
         }
         KeychainSwift().clear()
         
-        self.delegate?.userLoggedOut()
+        self.delegate?.userDidLoggedOut()
     }
 }
