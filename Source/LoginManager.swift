@@ -14,6 +14,7 @@ public typealias LoginCompletion = (response: LoginResponse) -> Void
 
 @objc public enum AuthType: Int {
     case Email
+    case Phone
     case Facebook
     case Twitter
     case SoundCloud
@@ -23,6 +24,9 @@ public func StringFromAuthType(authType: AuthType) -> String {
     switch authType {
     case .Email:
         return "Email"
+        
+    case .Phone:
+        return "Phone"
         
     case .Facebook:
         return "Facebook"
@@ -101,7 +105,7 @@ public class LoginManager: NSObject {
     
     public class func authData() -> AuthCredentials {
         let loginExtension = LoginManager.extensions.filter({ $0.hasAuthData() == true }).first
-        return AuthCredentials.init(authType: loginExtension!.authType(), authData: loginExtension!.authData())
+        return AuthCredentials(authType: loginExtension!.authType(), authData: loginExtension!.authData())
     }
     
     public class func saveAuthData(response: AnyObject, authType: AuthType) {
