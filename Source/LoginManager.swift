@@ -10,75 +10,75 @@ import Foundation
 import SwiftyUserDefaults
 import KeychainSwift
 
-public typealias LoginCompletion = (response: LoginResponse) -> Void
+public typealias LoginCompletion = (_ response: LoginResponse) -> Void
 
 @objc public enum AuthType: Int {
-    case Email
-    case Phone
-    case Facebook
-    case Twitter
-    case SoundCloud
+    case email
+    case phone
+    case facebook
+    case twitter
+    case soundCloud
 }
 
-public func StringFromAuthType(authType: AuthType) -> String {
+public func StringFromAuthType(_ authType: AuthType) -> String {
     switch authType {
-    case .Email:
+    case .email:
         return "Email"
         
-    case .Phone:
+    case .phone:
         return "Phone"
         
-    case .Facebook:
+    case .facebook:
         return "Facebook"
         
-    case .Twitter:
+    case .twitter:
         return "Twitter"
         
-    case .SoundCloud:
+    case .soundCloud:
         return "SoundCloud"
     }
 }
 
 @objc public protocol LoginProtocol: NSObjectProtocol {
-    func request(completion: LoginCompletion)
+    func request(_ completion: @escaping LoginCompletion)
     func authType() -> AuthType
     func hasAuthData() -> Bool
-    func authData() -> [String : AnyObject]
-    func authDataFromResponse(response: AnyObject) -> [String : AnyObject]
-    func save(response: AnyObject)
+    func authData() -> [String : Any]
+    func authDataFromResponse(_ response: Any) -> [String : Any]
+    func save(_ response: Any)
     func reset()
 }
 
 @objc public protocol HILoginManagerDelegate: NSObjectProtocol {
-    optional func userIdDidChanged()
+    @objc optional func userIdDidChanged()
     func userDidLoggedOut()
 }
 
-public class AuthCredentials: NSObject {
+open class AuthCredentials: NSObject {
     
-    public var type: AuthType
-    public var data: [String : AnyObject]
+    open var type: AuthType
+    open var data: [String : Any]
     
-    required public init(authType: AuthType, authData: [String : AnyObject]) {
+    required public init(authType: AuthType, authData: [String : Any]) {
         self.type = authType
         self.data = authData
         super.init()
     }
 }
 
-public class LoginResponse: NSObject {
-    public var response: AnyObject? = nil
-    public var error: NSError? = nil
-    public var credentials: AuthCredentials? = nil
+open class LoginResponse: NSObject {
+    open var response: Any? = nil
+    open var error: NSError? = nil
+    open var credentials: AuthCredentials? = nil
 }
 
-public class LoginManager: NSObject {
+open class LoginManager: NSObject {
     
-    public static var delegate: HILoginManagerDelegate? = nil
+    open static var delegate: HILoginManagerDelegate? = nil
     
-    public static var extensions = [LoginProtocol]()
+    open static var extensions = [LoginProtocol]()
     
-    public static var userId: NSNumber? {
+    open static var userId: NSNumber? {
         set {
             Defaults["userId"] = newValue
             self.delegate?.userIdDidChanged?()
@@ -88,32 +88,32 @@ public class LoginManager: NSObject {
         }
     }
     
-    private class func extensionForType(authType: AuthType) -> LoginProtocol {
+    fileprivate class func extensionForType(_ authType: AuthType) -> LoginProtocol {
         let loginExtension = LoginManager.extensions.filter({ $0.authType() == authType })
         assert(loginExtension.count > 0, "You doesn't register a login extension for \(StringFromAuthType(authType))")
         return loginExtension.first!
     }
     
-    public class func request(authType: AuthType, completion: LoginCompletion) {
+    open class func request(_ authType: AuthType, completion: @escaping LoginCompletion) {
         extensionForType(authType).request(completion)
     }
     
-    public class func hasAuthData() -> Bool {
+    open class func hasAuthData() -> Bool {
         let loginExtension = LoginManager.extensions.filter({ $0.hasAuthData() == true })
         return loginExtension.count > 0
     }
     
-    public class func authData() -> AuthCredentials {
+    open class func authData() -> AuthCredentials {
         let loginExtension = LoginManager.extensions.filter({ $0.hasAuthData() == true }).first
         return AuthCredentials(authType: loginExtension!.authType(), authData: loginExtension!.authData())
     }
     
-    public class func saveAuthData(response: AnyObject, authType: AuthType) {
+    open class func saveAuthData(_ response: Any, authType: AuthType) {
         extensionForType(authType).save(response)
     }
     
-    public class func logOut() {
-        for (_, loginExtension) in LoginManager.extensions.enumerate() {
+    open class func logOut() {
+        for (_, loginExtension) in LoginManager.extensions.enumerated() {
             loginExtension.reset()
         }
         KeychainSwift().clear()
