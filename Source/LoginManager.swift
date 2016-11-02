@@ -118,6 +118,12 @@ open class LoginManager: NSObject {
         }
         KeychainSwift().clear()
         
+        if let cookies = HTTPCookieStorage.shared.cookies {
+            for cookie in cookies {
+                HTTPCookieStorage.shared.deleteCookie(cookie)
+            }
+        }
+        
         self.delegate?.userDidLoggedOut()
     }
 }
