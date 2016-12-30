@@ -21,6 +21,7 @@ public typealias LoginCompletion = (_ response: LoginResponse) -> Void
     case instagram
     case linkedIn
     case tumblr
+    case google
 }
 
 public func StringFromAuthType(_ authType: AuthType) -> String {
@@ -48,6 +49,9 @@ public func StringFromAuthType(_ authType: AuthType) -> String {
         
     case .tumblr:
         return "Tumblr"
+        
+    case .google:
+        return "Google"
     }
 }
 
