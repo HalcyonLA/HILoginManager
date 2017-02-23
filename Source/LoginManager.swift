@@ -64,6 +64,7 @@ public func StringFromAuthType(_ authType: AuthType) -> String {
 
 @objc public protocol HILoginManagerDelegate: NSObjectProtocol {
     @objc optional func userIdDidChanged()
+    @objc optional func userWillLoggedOut()
     func userDidLoggedOut()
 }
 
@@ -146,6 +147,8 @@ open class LoginManager: NSObject {
     
     open class func logOut() {
         
+        delegate?.userWillLoggedOut?()
+        
         for item in extensions {
             item.reset()
         }
@@ -158,6 +161,6 @@ open class LoginManager: NSObject {
             }
         }
         
-        self.delegate?.userDidLoggedOut()
+        delegate?.userDidLoggedOut()
     }
 }
