@@ -6,7 +6,7 @@ s.name = "HILoginManager"
 s.module_name = "HILoginManager"
 s.summary = "Halcyon Innovation login manager."
 s.requires_arc = true
-s.version = "2.0.2"
+s.version = "2.0.3"
 s.author = { "Vlad Getman" => "ibrightsider@gmail.com" }
 
 s.license = { :type => "MIT", :file => "LICENSE" }
@@ -15,7 +15,7 @@ s.source = { :git => "https://github.com/HalcyonLA/HILoginManager.git", :tag => 
 
 s.framework = "UIKit"
 
-s.dependency 'KeychainSwift', '~> 7.0.0'
+s.dependency 'KeychainSwift', '~> 8.0.2'
 s.dependency 'SwiftyUserDefaults', '~> 3.0.0'
 
 s.source_files = "Source/**/*.{swift}"
