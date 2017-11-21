@@ -1,6 +1,6 @@
 //
 //  LoginManager.swift
-//  Spindle
+//  HILoginManager
 //
 //  Created by Vlad Getman on 20.05.16.
 //  Copyright © 2016 HalcyonInnovation. All rights reserved.
@@ -109,19 +109,19 @@ open class LoginManager: NSObject {
     
     open static var extensions = [LoginProtocol]()
     
-    open static var userId: NSNumber? {
+    open static var userId: Int64? {
         set {
             Defaults["userId"] = newValue
             self.delegate?.userIdDidChanged?()
         }
         get {
-            return Defaults.numberForKey("userId")
+            return Defaults.hasKey("userId") ? Int64(Defaults.integer(forKey: "userId")) : nil
         }
     }
     
-    fileprivate static let credentialsKey = "HILoginManager.Credentials"
+    private static let credentialsKey = "HILoginManager.Credentials"
     
-    fileprivate class func extensionForType(_ authType: AuthType) -> LoginProtocol {
+    private class func extensionForType(_ authType: AuthType) -> LoginProtocol {
         let loginExtension = LoginManager.extensions.filter({ $0.authType() == authType })
         assert(loginExtension.count > 0, "You doesn't register a login extension for \(StringFromAuthType(authType))")
         return loginExtension.first!
@@ -154,6 +154,8 @@ open class LoginManager: NSObject {
         }
         
         KeychainSwift().delete(credentialsKey)
+        
+        userId = nil
         
         if let cookies = HTTPCookieStorage.shared.cookies {
             for cookie in cookies {
