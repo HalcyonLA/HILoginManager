@@ -6,7 +6,7 @@ s.name = "HILoginManager"
 s.module_name = "HILoginManager"
 s.summary = "Halcyon Innovation login manager."
 s.requires_arc = true
-s.version = "2.0.4"
+s.version = "2.0.5"
 s.author = { "Vlad Getman" => "ibrightsider@gmail.com" }
 
 s.license = { :type => "MIT", :file => "LICENSE" }

@@ -119,6 +119,16 @@ open class LoginManager: NSObject {
         }
     }
     
+    open static var uuid: String? {
+        set {
+            Defaults["uuid"] = newValue
+            self.delegate?.userIdDidChanged?()
+        }
+        get {
+            return Defaults.string(forKey: "uuid")
+        }
+    }
+    
     private static let credentialsKey = "HILoginManager.Credentials"
     
     private class func extensionForType(_ authType: AuthType) -> LoginProtocol {
