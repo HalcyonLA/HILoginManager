@@ -166,6 +166,7 @@ open class LoginManager: NSObject {
         KeychainSwift().delete(credentialsKey)
         
         userId = nil
+        uuid = nil
         
         if let cookies = HTTPCookieStorage.shared.cookies {
             for cookie in cookies {
