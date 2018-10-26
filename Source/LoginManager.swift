@@ -105,11 +105,11 @@ open class LoginResponse: NSObject {
 
 open class LoginManager: NSObject {
     
-    open static var delegate: HILoginManagerDelegate? = nil
+    public static var delegate: HILoginManagerDelegate? = nil
     
-    open static var extensions = [LoginProtocol]()
+    public static var extensions = [LoginProtocol]()
     
-    open static var userId: Int64? {
+    public static var userId: Int64? {
         set {
             Defaults["userId"] = newValue
             self.delegate?.userIdDidChanged?()
@@ -119,7 +119,7 @@ open class LoginManager: NSObject {
         }
     }
     
-    open static var uuid: String? {
+    public static var uuid: String? {
         set {
             Defaults["uuid"] = newValue
             self.delegate?.userIdDidChanged?()
