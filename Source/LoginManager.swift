@@ -103,6 +103,30 @@ open class LoginResponse: NSObject {
     open var credentials: AuthCredentials? = nil
 }
 
+extension DefaultsKeys {
+//    static let chatFilters = DefaultsKey<String>("chatFilters", defaultValue: "")
+    static let userId = DefaultsKey<Int64?>("userId")
+    static let uuid = DefaultsKey<String?>("uuid")
+}
+
+extension Int64: DefaultsSerializable {
+    func save(key: String, value: Int64?, userDefaults: UserDefaults) {
+        if let item = value {
+            userDefaults.set(String(item), forKey: key)
+        } else {
+            userDefaults.removeObject(forKey: key)
+        }
+    }
+    
+    func get(key: String, userDefaults: UserDefaults) -> Int64? {
+        if let string = userDefaults.value(forKey: key) as? String,
+            let value = Int64(string) {
+            return value
+        }
+        return nil
+    }
+}
+
 open class LoginManager: NSObject {
     
     public static var delegate: HILoginManagerDelegate? = nil
@@ -111,21 +135,21 @@ open class LoginManager: NSObject {
     
     public static var userId: Int64? {
         set {
-            Defaults["userId"] = newValue
+            Defaults[.userId] = newValue
             self.delegate?.userIdDidChanged?()
         }
         get {
-            return Defaults.hasKey("userId") ? Int64(Defaults.integer(forKey: "userId")) : nil
+            return Defaults[.userId]
         }
     }
     
     public static var uuid: String? {
         set {
-            Defaults["uuid"] = newValue
+            Defaults[.uuid] = newValue
             self.delegate?.userIdDidChanged?()
         }
         get {
-            return Defaults.string(forKey: "uuid")
+            return Defaults[.uuid]
         }
     }
     
