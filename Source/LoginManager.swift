@@ -104,7 +104,6 @@ open class LoginResponse: NSObject {
 }
 
 extension DefaultsKeys {
-//    static let chatFilters = DefaultsKey<String>("chatFilters", defaultValue: "")
     static let userId = DefaultsKey<Int64?>("userId")
     static let uuid = DefaultsKey<String?>("uuid")
 }
